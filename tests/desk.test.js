@@ -35,9 +35,10 @@ test('dragging lifts and moves a document; dropping it on another produces a phy
   assert(Math.abs(upper.position.x - lower.position.x) < 0.3);
 });
 
-test('fast far-outside dragging stays bounded, and tidy restores every document', () => {
+test('fast far-outside dragging stays bounded, and tidy aligns documents with the table', () => {
   const desk = createDeskPhysics(14, 11);
-  const paper = desk.addPaper({ x: -2, z: -1, angle: 0.3 });
+  const paper = desk.addPaper({ x: -2.2, z: -1.1, angle: 0.3, tidyX: -2, tidyZ: -1 });
+  const second = desk.addPaper({ x: 2.1, z: -0.8, angle: -0.4, tidyX: 2, tidyZ: -1 });
   desk.beginDrag(paper, paper.position);
   desk.moveDrag({ x: 999, y: 999, z: -999 });
   advance(desk, 3);
@@ -50,7 +51,18 @@ test('fast far-outside dragging stays bounded, and tidy restores every document'
   desk.reset();
   assert.equal(paper.position.x, -2);
   assert.equal(paper.position.z, -1);
+  assert.equal(second.position.x, 2);
+  assert.equal(second.position.z, -1);
+  for (const body of [paper, second]) {
+    assert.deepEqual(body.quaternion.toArray(), [0, 0, 0, 1]);
+    assert.equal(body.velocity.length(), 0);
+    assert.equal(body.angularVelocity.length(), 0);
+  }
   assert.equal(desk.dragging, null);
+  advance(desk, 2);
+  for (const body of [paper, second]) {
+    assert(Math.abs(body.quaternion.y) < 0.001, 'Documents stay aligned after settling');
+  }
 });
 
 test('the desk and index contain only complete published artifacts', () => {

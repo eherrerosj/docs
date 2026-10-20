@@ -177,10 +177,12 @@ function createDesk(documents) {
     const face = new THREE.MeshStandardMaterial({ map: texture, roughness: 0.85 });
     const mesh = new THREE.Mesh(geometry, [edgeMaterial, edgeMaterial, face, backMaterial, edgeMaterial, edgeMaterial]);
     mesh.castShadow = true; mesh.receiveShadow = true;
-    const x = documents.length === 1 ? 0 : ((index % columns) - (columns - 1) / 2) * 3.55 + Math.sin(index * 13 + 2) * 0.24;
-    const z = documents.length === 1 ? 0 : (Math.floor(index / columns) - (rows - 1) / 2) * 3.9 + Math.cos(index * 7 + 1) * 0.22;
+    const tidyX = documents.length === 1 ? 0 : ((index % columns) - (columns - 1) / 2) * 3.55;
+    const tidyZ = documents.length === 1 ? 0 : (Math.floor(index / columns) - (rows - 1) / 2) * 3.9;
+    const x = tidyX + (documents.length === 1 ? 0 : Math.sin(index * 13 + 2) * 0.24);
+    const z = tidyZ + (documents.length === 1 ? 0 : Math.cos(index * 7 + 1) * 0.22);
     const angle = Math.sin(index * 4.1 + 0.6) * 0.19;
-    const body = physics.addPaper({ x, z, angle });
+    const body = physics.addPaper({ x, z, angle, tidyX, tidyZ });
     mesh.userData.paper = { document, body, mesh, face, match: true };
     papers.push(mesh.userData.paper);
     scene.add(mesh);

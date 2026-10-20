@@ -104,7 +104,7 @@ The library is a Three.js world with a table and movable documents. Cannon-es ha
 - Drag a document to pick it up and drop it elsewhere. Moving it does not open it.
 - Click or tap a document to select it, then use **Open document**. Double-click also opens it.
 - Drag empty desk space to orbit; scroll or pinch to zoom. Right-drag pans the view.
-- **Reset view** restores the camera. **Tidy desk** restores the documents.
+- **Reset view** restores the camera. **Tidy desk** arranges the documents in even rows, with their edges parallel to the table.
 - When the canvas has keyboard focus, arrow keys pan, +/− zoom, R resets the view, and Enter goes to the searchable collection.
 - Escape cancels an active drag or closes the preview. The collection uses ordinary links and works without WebGL.
 - Documents start settled, with no automatic camera motion. Reduced-motion settings disable camera easing. The renderer stops drawing once the scene settles, and simulation pauses when the tab or desk is out of view.

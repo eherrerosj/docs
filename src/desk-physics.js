@@ -25,7 +25,7 @@ export function createDeskPhysics(width, depth) {
   staticBox(0, 0.25, -depth / 2 - 0.05, width / 2, 0.5, 0.08);
   staticBox(0, 0.25, depth / 2 + 0.05, width / 2, 0.5, 0.08);
 
-  function addPaper({ x, z, angle = 0, y = PAPER_THICKNESS / 2 + 0.015 }) {
+  function addPaper({ x, z, angle = 0, y = PAPER_THICKNESS / 2 + 0.015, tidyX = x, tidyZ = z }) {
     const body = new CANNON.Body({
       mass: 0.35,
       shape: new CANNON.Box(new CANNON.Vec3(PAPER_WIDTH / 2, PAPER_THICKNESS / 2, PAPER_HEIGHT / 2)),
@@ -36,7 +36,7 @@ export function createDeskPhysics(width, depth) {
     body.angularFactor.set(0, 1, 0);
     body.position.set(x, y, z);
     body.quaternion.setFromEuler(0, angle, 0);
-    body.home = { x, z, angle };
+    body.home = { x: tidyX, z: tidyZ, angle: 0 };
     world.addBody(body);
     papers.push(body);
     return body;
