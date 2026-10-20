@@ -109,20 +109,7 @@ The library is a Three.js world with a table and movable documents. Cannon-es ha
 - Escape cancels an active drag or closes the preview. The file index uses ordinary links and works without WebGL.
 - Documents start settled, with no automatic camera motion. Reduced-motion settings disable camera easing. The renderer stops drawing once the scene settles, and simulation pauses when the tab or desk is out of view.
 
-There is one paper per published artifact. A site may also define optional section papers in its docs/sites.json entry:
-
-~~~json
-"documents": [
-  {
-    "anchor": "architecture",
-    "title": "Architecture",
-    "description": "How this project is put together.",
-    "category": "Technical notes"
-  }
-]
-~~~
-
-The example links to sites/<slug>/#architecture; that ID must exist in the site's HTML. These are sections of the same artifact, not separate publications. The initial desk contains the FacturaScripts report and five of its actual sections.
+Each published artifact gets one paper on the desk and one entry in the file index. Sections stay inside the artifact. The initial desk contains the FacturaScripts report.
 
 Everything is bundled locally; there are no CDN requests. Three.js 0.186.1 and cannon-es 0.20.0 licenses are in docs/assets/vendor/.
 

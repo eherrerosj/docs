@@ -34,8 +34,8 @@ async function load() {
     document.querySelector('.index-context').textContent = 'The catalog could not load. The FacturaScripts report is still available below.';
   }
   const documents = documentsFromSites(sites);
-  const artifactCount = new Set(documents.map(document => document.slug)).size;
-  document.querySelector('#desk-count').textContent = documents.length + ' documents / ' + artifactCount + (artifactCount === 1 ? ' artifact' : ' artifacts');
+  const artifactCount = documents.length;
+  document.querySelector('#desk-count').textContent = artifactCount + (artifactCount === 1 ? ' artifact' : ' artifacts');
   renderIndex(documents);
   search.addEventListener('input', () => {
     renderIndex(documents);
@@ -76,7 +76,7 @@ function renderIndex(documents) {
   }
   document.querySelector('#count').textContent = '[' + String(matching.length).padStart(2, '0') + ']';
   document.querySelector('#no-results').hidden = matching.length > 0;
-  document.querySelector('#index-status').textContent = matching.length + ' documents found.';
+  document.querySelector('#index-status').textContent = matching.length + (matching.length === 1 ? ' document found.' : ' documents found.');
 }
 
 function select(entry) {
@@ -177,8 +177,8 @@ function createDesk(documents) {
     const face = new THREE.MeshStandardMaterial({ map: texture, roughness: 0.85 });
     const mesh = new THREE.Mesh(geometry, [edgeMaterial, edgeMaterial, face, backMaterial, edgeMaterial, edgeMaterial]);
     mesh.castShadow = true; mesh.receiveShadow = true;
-    const x = ((index % columns) - (columns - 1) / 2) * 3.55 + Math.sin(index * 13 + 2) * 0.24;
-    const z = (Math.floor(index / columns) - (rows - 1) / 2) * 3.9 + Math.cos(index * 7 + 1) * 0.22;
+    const x = documents.length === 1 ? 0 : ((index % columns) - (columns - 1) / 2) * 3.55 + Math.sin(index * 13 + 2) * 0.24;
+    const z = documents.length === 1 ? 0 : (Math.floor(index / columns) - (rows - 1) / 2) * 3.9 + Math.cos(index * 7 + 1) * 0.22;
     const angle = Math.sin(index * 4.1 + 0.6) * 0.19;
     const body = physics.addPaper({ x, z, angle });
     mesh.userData.paper = { document, body, mesh, face, match: true };

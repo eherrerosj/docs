@@ -53,14 +53,16 @@ test('fast far-outside dragging stays bounded, and tidy restores every document'
   assert.equal(desk.dragging, null);
 });
 
-test('every published desk document points to an existing artifact or section', () => {
+test('the desk and index contain only complete published artifacts', () => {
   const catalog = JSON.parse(readFileSync(new URL('../docs/sites.json', import.meta.url)));
-  const documents = documentsFromSites(catalog);
-  assert(documents.length >= catalog.length);
+  const documents = documentsFromSites(catalog.map(site => ({
+    ...site, documents: [{ anchor: 'architecture', title: 'Architecture' }],
+  })));
+  assert.equal(documents.length, catalog.length);
   for (const document of documents) {
-    const [path, anchor] = document.href.split('#');
-    const html = readFileSync(new URL('../docs/' + path + 'index.html', import.meta.url), 'utf8');
-    if (anchor) assert(html.includes('id="' + decodeURIComponent(anchor) + '"'), document.href);
+    assert.equal(document.kind, 'Full artifact');
+    assert.equal(document.href, 'sites/' + document.slug + '/');
+    assert(readFileSync(new URL('../docs/' + document.href + 'index.html', import.meta.url), 'utf8').length > 0);
     assert(documentMatches(document, document.title));
   }
 });

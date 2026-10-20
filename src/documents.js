@@ -12,16 +12,6 @@ export function documentsFromSites(sites) {
     };
     const href = 'sites/' + encodeURIComponent(site.slug) + '/';
     documents.push({ ...base, id: site.slug, title: site.title, href, kind: 'Full artifact' });
-    const anchors = new Set();
-    for (const section of Array.isArray(site.documents) ? site.documents : []) {
-      if (!section || !/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(section.anchor) || typeof section.title !== 'string' || anchors.has(section.anchor)) continue;
-      anchors.add(section.anchor);
-      documents.push({
-        ...base, id: site.slug + '#' + section.anchor, title: section.title,
-        description: section.description || '', category: section.category || 'Section',
-        href: href + '#' + encodeURIComponent(section.anchor), kind: 'Section',
-      });
-    }
   }
   return documents;
 }
