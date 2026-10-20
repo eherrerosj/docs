@@ -49,7 +49,7 @@ async function load() {
   } catch {
     canvas.hidden = true;
     fallback.hidden = false;
-    document.querySelector('#fallback-message').textContent = 'The 3D desk is unavailable in this browser. All documents are in the file index.';
+    document.querySelector('#fallback-message').textContent = 'The 3D desk is unavailable in this browser. All documents are in the library.';
   }
 }
 
@@ -68,13 +68,13 @@ function renderIndex(documents) {
   for (const document of matching) {
     const row = element('a', 'document-row');
     row.href = document.href;
-    const number = element('span', 'row-number', '[' + String(documents.indexOf(document) + 1).padStart(2, '0') + ']');
+    const number = element('span', 'row-number', String(documents.indexOf(document) + 1).padStart(2, '0'));
     const body = element('span', 'row-body');
     body.append(element('strong', '', document.title), element('span', '', document.description));
-    row.append(number, body, element('span', 'row-kind', document.kind), element('span', '', '↗'));
+    row.append(number, body, element('span', 'row-kind', document.category), element('span', '', '↗'));
     list.append(row);
   }
-  document.querySelector('#count').textContent = '[' + String(matching.length).padStart(2, '0') + ']';
+  document.querySelector('#count').textContent = String(matching.length);
   document.querySelector('#no-results').hidden = matching.length > 0;
   document.querySelector('#index-status').textContent = matching.length + (matching.length === 1 ? ' document found.' : ' documents found.');
 }
@@ -84,7 +84,7 @@ function select(entry) {
   canvas.dataset.selected = entry.id;
   document.querySelector('#preview-title').textContent = entry.title;
   document.querySelector('#preview-description').textContent = entry.description;
-  document.querySelector('#preview-meta').textContent = entry.artifact + ' / ' + entry.kind + ' / ' + entry.language;
+  document.querySelector('#preview-meta').textContent = entry.category + ' · ' + entry.language;
   document.querySelector('#open-document').href = entry.href;
   preview.hidden = false;
   hoverLabel.hidden = true;
@@ -157,7 +157,7 @@ function createDesk(documents) {
   const floorMaterial = new THREE.MeshStandardMaterial({ roughness: 1 });
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), floorMaterial);
   floor.rotation.x = -Math.PI / 2; floor.position.y = -2.92; floor.receiveShadow = true; scene.add(floor);
-  const ambient = new THREE.HemisphereLight(0xe8f0dc, 0x506653, 2.4);
+  const ambient = new THREE.HemisphereLight(0xfff4e5, 0x65554a, 2.4);
   scene.add(ambient);
   const key = new THREE.DirectionalLight(0xfff4d8, 3.2);
   key.position.set(-7, 15, 9); key.castShadow = true;
@@ -188,7 +188,7 @@ function createDesk(documents) {
 
   const outline = new THREE.LineSegments(
     new THREE.EdgesGeometry(new THREE.BoxGeometry(PAPER_WIDTH + 0.06, PAPER_THICKNESS + 0.025, PAPER_HEIGHT + 0.06)),
-    new THREE.LineBasicMaterial({ color: 0xbce48e, transparent: true, opacity: 0.8 }),
+    new THREE.LineBasicMaterial({ color: 0xe2a184, transparent: true, opacity: 0.8 }),
   );
   outline.visible = false; scene.add(outline);
   let highlighted = null, hoverPaper = null;
@@ -204,15 +204,15 @@ function createDesk(documents) {
 
   function updateTheme() {
     const dark = systemTheme.matches;
-    const color = dark ? '#0c1311' : '#edf0e6';
+    const color = dark ? '#211e1b' : '#f7f3ec';
     scene.background = new THREE.Color(color);
     scene.fog = new THREE.Fog(color, 35, 100);
-    floorMaterial.color.set(dark ? '#14221c' : '#d7dfcc');
-    tableSideMaterial.color.set(dark ? '#203a2d' : '#74896b');
-    rimMaterial.color.set(dark ? '#34523c' : '#8fa17e');
+    floorMaterial.color.set(dark ? '#29231e' : '#ede4d5');
+    tableSideMaterial.color.set(dark ? '#493024' : '#987451');
+    rimMaterial.color.set(dark ? '#76523a' : '#ae8960');
     surfaceMaterial.map?.dispose();
     surfaceMaterial.map = tableTexture(dark); surfaceMaterial.needsUpdate = true;
-    outline.material.color.set(dark ? '#bce48e' : '#376b48');
+    outline.material.color.set(dark ? '#e2a184' : '#a24f38');
     ambient.intensity = dark ? 1.65 : 2.4;
     key.intensity = dark ? 2.3 : 3.2;
     dirty = true;
@@ -224,7 +224,7 @@ function createDesk(documents) {
     const aspect = stage.clientWidth / stage.clientHeight;
     const tangent = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
     const distance = Math.max((tableWidth * 0.82) / (Math.max(aspect, 1) * 2 * tangent), (tableDepth * 0.7 + 1.8) / (2 * tangent)) * 1.12;
-    const x = aspect < 0.9 ? -1.5 : 0;
+    const x = aspect < 0.9 && documents.length > 1 ? -1.5 : 0;
     controls.target.set(x, 0, 0);
     camera.position.set(x, distance * 0.77, distance * 0.64);
     controls.update();
@@ -392,7 +392,7 @@ function createDesk(documents) {
   canvas.addEventListener('webglcontextlost', event => {
     event.preventDefault(); lost = true; cancelDrag(); schedule();
     canvas.hidden = true; fallback.hidden = false;
-    document.querySelector('#fallback-message').textContent = 'The 3D desk paused. You can still read every document in the file index.';
+    document.querySelector('#fallback-message').textContent = 'The 3D desk paused. You can still read every document in the library.';
     document.querySelectorAll('.desk-toolbar button').forEach(button => { button.disabled = true; });
   });
 

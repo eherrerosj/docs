@@ -99,21 +99,21 @@ There is no custom workflow, framework, or dependency installation. The `.nojeky
 
 ### The 3D reading desk
 
-The library is a Three.js world with a table and movable documents. Cannon-es handles gravity, collisions, stacking, and dragging. Documents stay face up, and the table edges keep them in reach. The interface and scene follow the system's light/dark theme.
+The library is a Three.js world with a table and movable documents. Cannon-es handles gravity, collisions, stacking, and dragging. Documents stay face up, and the table edges keep them in reach. The reading-room theme uses serif headings, terracotta accents, illustrated report covers, and a wood table. The interface and scene follow the system's light/dark theme.
 
 - Drag a document to pick it up and drop it elsewhere. Moving it does not open it.
 - Click or tap a document to select it, then use **Open document**. Double-click also opens it.
 - Drag empty desk space to orbit; scroll or pinch to zoom. Right-drag pans the view.
 - **Reset view** restores the camera. **Tidy desk** restores the documents.
-- When the canvas has keyboard focus, arrow keys pan, +/− zoom, R resets the view, and Enter goes to the searchable file index.
-- Escape cancels an active drag or closes the preview. The file index uses ordinary links and works without WebGL.
+- When the canvas has keyboard focus, arrow keys pan, +/− zoom, R resets the view, and Enter goes to the searchable collection.
+- Escape cancels an active drag or closes the preview. The collection uses ordinary links and works without WebGL.
 - Documents start settled, with no automatic camera motion. Reduced-motion settings disable camera easing. The renderer stops drawing once the scene settles, and simulation pauses when the tab or desk is out of view.
 
-Each published artifact gets one paper on the desk and one entry in the file index. Sections stay inside the artifact. The initial desk contains the FacturaScripts report.
+Each published artifact gets one paper on the desk and one entry in the collection. Sections stay inside the artifact. The initial desk contains the FacturaScripts report.
 
 Everything is bundled locally; there are no CDN requests. Three.js 0.186.1 and cannon-es 0.20.0 licenses are in docs/assets/vendor/.
 
-Uploading sites needs no build tools: a new catalog entry appears on the desk automatically. To change the desk itself, edit src/, run **npm ci**, **npm test**, and **npm run build**, then commit the source and generated docs/assets/desk.js together. The build also updates the script URL with a content hash so browsers load the new version after each deployment. The catalog is revalidated on each page load. Versions are pinned in package-lock.json.
+Uploading sites needs no build tools: a new catalog entry appears on the desk automatically. To change the desk itself, edit src/, run **npm ci**, **npm test**, and **npm run build**, then commit the source and generated docs/assets/desk.js together. The build also updates the script, stylesheet, and favicon URLs with content hashes so browsers load the new version after each deployment. The catalog is revalidated on each page load. Versions are pinned in package-lock.json.
 
 ### Paths and supported content
 

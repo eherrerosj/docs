@@ -9,8 +9,17 @@ await build({
 
 const bundle = await readFile('docs/assets/desk.js');
 const version = createHash('sha256').update(bundle).digest('hex').slice(0, 12);
-const index = await readFile('docs/index.html', 'utf8');
-await writeFile('docs/index.html', index.replace(
+let index = await readFile('docs/index.html', 'utf8');
+index = index.replace(
   /src="assets\/desk\.js(?:\?v=[^"]*)?"/,
   `src="assets/desk.js?v=${version}"`,
-));
+);
+for (const asset of ['style.css', 'favicon.svg']) {
+  const content = await readFile(`docs/assets/${asset}`);
+  const hash = createHash('sha256').update(content).digest('hex').slice(0, 12);
+  index = index.replace(
+    new RegExp(`href="assets/${asset.replace('.', '\\.')}[^\"]*"`),
+    `href="assets/${asset}?v=${hash}"`,
+  );
+}
+await writeFile('docs/index.html', index);
