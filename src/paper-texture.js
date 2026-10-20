@@ -67,25 +67,3 @@ function documentElement() {
   canvas.width = 640; canvas.height = 810;
   return canvas;
 }
-
-export function tableTexture(dark) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 1536; canvas.height = 1024;
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = dark ? '#5b4030' : '#c7a47c';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  // Fine, irregular lines suggest wood grain without a distracting grid.
-  for (let y = 0; y < canvas.height; y += 3) {
-    const wave = Math.sin(y * 13.7);
-    ctx.strokeStyle = dark ? 'rgba(27, 15, 8, 0.12)' : 'rgba(104, 65, 33, 0.10)';
-    ctx.lineWidth = 0.5 + (wave + 1) * 0.4;
-    ctx.beginPath(); ctx.moveTo(0, y);
-    for (let x = 0; x <= canvas.width; x += 32) {
-      ctx.lineTo(x, y + Math.sin(x * 0.006 + y * 0.02) * (2 + wave));
-    }
-    ctx.stroke();
-  }
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  return texture;
-}

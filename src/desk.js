@@ -2,7 +2,9 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { createDeskPhysics, PAPER_WIDTH, PAPER_HEIGHT, PAPER_THICKNESS } from './desk-physics.js';
 import { documentsFromSites, documentMatches } from './documents.js';
-import { paperTexture, tableTexture } from './paper-texture.js';
+import { paperTexture } from './paper-texture.js';
+import { woodTextures, stoneTextures } from './desk-materials.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 const stage = document.querySelector('#stage');
 const canvas = document.querySelector('#desk');
@@ -110,7 +112,7 @@ function createDesk(documents) {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.22;
+  renderer.toneMappingExposure = 1.05;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 180);
   const controls = new OrbitControls(camera, canvas);
@@ -125,38 +127,42 @@ function createDesk(documents) {
   controls.rotateSpeed = 0.5;
 
   const columns = documents.length <= 4 ? 2 : 3;
-  const rows = Math.max(2, Math.ceil(documents.length / columns));
+  const rows = Math.max(1, Math.ceil(documents.length / columns));
   const tableWidth = columns * 3.55 + 3;
-  const tableDepth = rows * 3.9 + 2.6;
+  const tableDepth = documents.length <= 2 ? 7 : rows * 3.9 + 2.6;
   controls.maxDistance = Math.max(55, tableDepth * 2.2);
   const physics = createDeskPhysics(tableWidth, tableDepth);
-  const tableSideMaterial = new THREE.MeshStandardMaterial({ color: 0x344b36, roughness: 0.9 });
-  const table = new THREE.Mesh(new THREE.BoxGeometry(tableWidth, 0.4, tableDepth), tableSideMaterial);
-  table.position.y = -0.2;
+  const woodMaterial = new THREE.MeshStandardMaterial({ roughness: 0.82, normalScale: new THREE.Vector2(0.45, 0.45) });
+  const frameMaterial = new THREE.MeshStandardMaterial({ roughness: 0.7 });
+  const brassMaterial = new THREE.MeshStandardMaterial({ color: 0x9d8050, roughness: 0.36, metalness: 0.65 });
+  const table = new THREE.Mesh(new RoundedBoxGeometry(tableWidth, 0.42, tableDepth, 4, 0.12), woodMaterial);
+  table.position.y = -0.21;
   table.castShadow = true; table.receiveShadow = true;
   scene.add(table);
-  const surfaceMaterial = new THREE.MeshStandardMaterial({ roughness: 0.95, metalness: 0 });
-  const surface = new THREE.Mesh(new THREE.PlaneGeometry(tableWidth - 0.01, tableDepth - 0.01), surfaceMaterial);
-  surface.rotation.x = -Math.PI / 2;
-  surface.position.y = 0.005;
-  surface.receiveShadow = true;
-  scene.add(surface);
 
-  const rimMaterial = new THREE.MeshStandardMaterial({ roughness: 0.8, color: 0x38513c });
-  for (const [x, z, w, d] of [[-tableWidth / 2, 0, 0.07, tableDepth], [tableWidth / 2, 0, 0.07, tableDepth], [0, -tableDepth / 2, tableWidth, 0.07], [0, tableDepth / 2, tableWidth, 0.07]]) {
-    const rim = new THREE.Mesh(new THREE.BoxGeometry(w, 0.13, d), rimMaterial);
-    rim.position.set(x, 0.05, z);
-    rim.castShadow = true; scene.add(rim);
+  function deskPart(geometry, material, x, y, z) {
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(x, y, z); mesh.castShadow = true; mesh.receiveShadow = true;
+    scene.add(mesh);
+    return mesh;
   }
-  for (const x of [-tableWidth / 2 + 0.7, tableWidth / 2 - 0.7]) {
-    for (const z of [-tableDepth / 2 + 0.7, tableDepth / 2 - 0.7]) {
-      const leg = new THREE.Mesh(new THREE.BoxGeometry(0.32, 2.5, 0.32), tableSideMaterial);
-      leg.position.set(x, -1.65, z); leg.castShadow = true; scene.add(leg);
+  // An inset frame and a shallow drawer make the top read as a writing desk.
+  for (const x of [-tableWidth / 2 + 0.55, tableWidth / 2 - 0.55]) {
+    deskPart(new RoundedBoxGeometry(0.18, 0.5, tableDepth - 1.1, 2, 0.04), frameMaterial, x, -0.6, 0);
+  }
+  deskPart(new RoundedBoxGeometry(tableWidth - 1.1, 0.5, 0.18, 2, 0.04), frameMaterial, 0, -0.6, -tableDepth / 2 + 0.55);
+  deskPart(new RoundedBoxGeometry(tableWidth * 0.42, 0.55, 1.4, 3, 0.06), woodMaterial, 0, -0.72, tableDepth / 2 - 0.95);
+  deskPart(new RoundedBoxGeometry(0.72, 0.07, 0.09, 3, 0.03), brassMaterial, 0, -0.7, tableDepth / 2 - 0.21);
+  for (const x of [-tableWidth / 2 + 0.65, tableWidth / 2 - 0.65]) {
+    for (const z of [-tableDepth / 2 + 0.65, tableDepth / 2 - 0.65]) {
+      deskPart(new THREE.CylinderGeometry(0.19, 0.11, 2.5, 16), frameMaterial, x, -1.67, z);
+      deskPart(new THREE.CylinderGeometry(0.115, 0.11, 0.13, 16), brassMaterial, x, -2.855, z);
     }
   }
-  const floorMaterial = new THREE.MeshStandardMaterial({ roughness: 1 });
+  const floorMaterial = new THREE.MeshStandardMaterial({ roughness: 0.91, bumpScale: 0.045 });
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), floorMaterial);
   floor.rotation.x = -Math.PI / 2; floor.position.y = -2.92; floor.receiveShadow = true; scene.add(floor);
+  const materialThemes = new Map();
   const ambient = new THREE.HemisphereLight(0xfff4e5, 0x65554a, 2.4);
   scene.add(ambient);
   const key = new THREE.DirectionalLight(0xfff4d8, 3.2);
@@ -204,19 +210,25 @@ function createDesk(documents) {
   const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.9);
   const intersection = new THREE.Vector3();
 
+  const woodMaps = woodTextures(renderer, () => { dirty = true; });
+
   function updateTheme() {
     const dark = systemTheme.matches;
     const color = dark ? '#211e1b' : '#f7f3ec';
     scene.background = new THREE.Color(color);
     scene.fog = new THREE.Fog(color, 35, 100);
-    floorMaterial.color.set(dark ? '#29231e' : '#ede4d5');
-    tableSideMaterial.color.set(dark ? '#493024' : '#987451');
-    rimMaterial.color.set(dark ? '#76523a' : '#ae8960');
-    surfaceMaterial.map?.dispose();
-    surfaceMaterial.map = tableTexture(dark); surfaceMaterial.needsUpdate = true;
+    if (!materialThemes.has(dark)) {
+      materialThemes.set(dark, { stone: stoneTextures(dark, renderer) });
+    }
+    const materials = materialThemes.get(dark);
+    Object.assign(woodMaterial, woodMaps);
+    woodMaterial.color.setRGB(...(dark ? [1.15, 1.3, 1.45] : [1.8, 2.1, 2.4]));
+    Object.assign(floorMaterial, materials.stone);
+    woodMaterial.needsUpdate = floorMaterial.needsUpdate = true;
+    frameMaterial.color.set(dark ? '#493024' : '#785339');
     outline.material.color.set(dark ? '#e2a184' : '#a24f38');
-    ambient.intensity = dark ? 1.65 : 2.4;
-    key.intensity = dark ? 2.3 : 3.2;
+    ambient.intensity = dark ? 1.25 : 1.8;
+    key.intensity = dark ? 1.8 : 2.5;
     dirty = true;
   }
 
@@ -225,10 +237,10 @@ function createDesk(documents) {
     controls.reset();
     const aspect = stage.clientWidth / stage.clientHeight;
     const tangent = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
-    const distance = Math.max((tableWidth * 0.82) / (Math.max(aspect, 1) * 2 * tangent), (tableDepth * 0.7 + 1.8) / (2 * tangent)) * 1.12;
+    const distance = Math.max((tableWidth * 0.82) / (Math.max(aspect, 1) * 2 * tangent), (tableDepth * 0.85 + 3.4) / (2 * tangent)) * 1.12;
     const x = aspect < 0.9 && documents.length > 1 ? -1.5 : 0;
-    controls.target.set(x, 0, 0);
-    camera.position.set(x, distance * 0.77, distance * 0.64);
+    controls.target.set(x, -0.45, 0);
+    camera.position.set(x, distance * 0.72, distance * 0.72);
     controls.update();
     dirty = true;
   }
@@ -372,7 +384,7 @@ function createDesk(documents) {
   document.querySelector('#reset-view').addEventListener('click', resetView);
   document.querySelector('#tidy').addEventListener('click', () => {
     cancelDrag(); closePreview(); physics.reset(); highlight(null);
-    status.textContent = 'Documents returned to their original places.';
+    status.textContent = 'Documents arranged in straight rows, aligned with the table.';
     dirty = true;
   });
   controls.addEventListener('change', () => {
