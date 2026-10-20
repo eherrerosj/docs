@@ -1,0 +1,12 @@
+{
+  "name": "eherrerosj-artifact-library",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build:sculpture": "esbuild src/sculpture.js --bundle --minify --format=esm --outfile=docs/assets/sculpture.js --legal-comments=linked"
+  },
+  "devDependencies": {
+    "three": "0.186.1",
+    "esbuild": "0.28.2"
+  }
+}

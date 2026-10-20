@@ -3,45 +3,72 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Reports, guides, and independent sites shared by Enrique Herreros.">
-  <meta name="theme-color" content="#f6f5f0">
-  <title>Docs — Enrique Herreros</title>
+  <meta name="description" content="Enrique Herreros. Library of artifacts.">
+  <meta name="theme-color" content="#f2f0e9">
+  <title>Enrique Herreros / Library of artifacts</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
   <script src="assets/catalog.js" defer></script>
+  <script src="assets/sculpture.js" type="module"></script>
 </head>
 <body>
-  <a class="skip" href="#library">Skip to library</a>
-  <div class="shell">
-    <header class="header">
-      <a class="brand" href="./" aria-label="Docs home"><span class="brand-mark">eh.</span><span>Enrique Herreros <span class="brand-label">/ docs</span></span></a>
-      <a class="github-link" href="https://github.com/eherrerosj/docs">View on GitHub <span aria-hidden="true">↗</span></a>
+  <a class="skip" href="#library">Skip to artifacts</a>
+  <div class="page">
+    <header class="masthead">
+      <a href="./" class="home" aria-label="Home"><span class="mark" aria-hidden="true">[eh]</span> / index</a>
+      <a class="github" href="https://github.com/eherrerosj">github <span aria-hidden="true">↗</span></a>
     </header>
     <main>
-      <section class="intro" aria-labelledby="heading">
-        <p class="eyebrow"><span class="dot"></span> THE SHARED LIBRARY</p>
-        <h1 id="heading">Ideas, explained.<br><span>Work, documented.</span></h1>
-        <p class="lede">Reports, practical guides, and small websites.<br>A place to read, explore, and share.</p>
-      </section>
-      <section id="library" class="library" aria-labelledby="library-heading">
-        <div class="library-bar">
-          <div class="section-heading"><h2 id="library-heading">The collection</h2><span id="count" class="count">01</span></div>
-          <label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Find a site…" aria-label="Search the collection" autocomplete="off"></label>
+      <section class="hero" aria-labelledby="name">
+        <div class="identity">
+          <p class="eyebrow"><span aria-hidden="true">┌─</span> a personal collection</p>
+          <h1 id="name">Enrique<br>Herreros<span class="period">.</span></h1>
+          <p class="subtitle">Library of artifacts<span class="cursor" aria-hidden="true">_</span></p>
         </div>
-        <div id="sites" class="grid">
-          <a class="site-card" href="sites/facturascripts/">
-            <div class="card-top"><span class="category">Technical due diligence</span><span class="arrow" aria-hidden="true">↗</span></div>
-            <h3>FacturaScripts &amp; accounting for a Spanish SL</h3>
-            <p>A technical review and practical accounting course for engineers. Architecture, invoice lifecycles, worked examples, and the processes behind a Spanish accounting practice.</p>
-            <div class="card-bottom"><span>Spanish</span><span>21 Oct 2026</span></div>
+        <figure class="sculpture">
+          <div id="ascii-stage" class="ascii-stage" aria-hidden="true">
+            <pre id="ascii-fallback">                 .________________.
+               .'                /|
+             .'                .' |
+           .'________________.'   |
+           |  . . . . . . .  |   .'
+           |________________| .'
+              .________________.
+            .'                /|
+          .'                .' |
+        .'________________.'   |
+        |  . . . . . . .  |   .'
+        |________________| .'
+           .________________.
+         .'                /|
+       .'                .' |
+     .'________________.'   |
+     |  . . . . . . .  |   .'
+     |________________| .'</pre>
+            <canvas id="ascii" hidden></canvas>
+          </div>
+          <figcaption><span><span class="figure-number">01</span> / paper study</span><button id="motion" type="button" aria-label="Pause sculpture animation" aria-pressed="false" hidden>[ pause ]</button></figcaption>
+        </figure>
+      </section>
+      <section id="library" class="library" aria-labelledby="index-label">
+        <div class="index-heading">
+          <h2 id="index-label">Artifacts <span id="count">[01]</span></h2>
+          <span class="index-note" aria-hidden="true">open to explore ↙</span>
+          <label id="search-wrap" class="search" hidden><span aria-hidden="true">/</span><input id="search" type="search" placeholder="find an artifact" aria-label="Search artifacts" autocomplete="off"></label>
+        </div>
+        <div id="sites" class="index">
+          <a class="artifact" href="sites/facturascripts/">
+            <span class="artifact-number" aria-hidden="true">001</span>
+            <div class="artifact-body"><h3>FacturaScripts</h3><p>Inside the ERP, with a practical accounting course for Spanish SLs.</p></div>
+            <div class="artifact-meta"><span>Review + course</span><span>Spanish · 2026</span></div>
+            <span class="artifact-open" aria-hidden="true">↗</span>
           </a>
         </div>
-        <p id="empty" class="empty" hidden>No sites match your search. Try another word.</p>
+        <p id="empty" class="empty" hidden>Nothing here with that name.</p>
         <p id="status" class="sr-only" role="status" aria-live="polite"></p>
       </section>
-      <aside class="note"><span class="note-icon" aria-hidden="true">↗</span><p><strong>Made to be shared.</strong> Every site has its own link. Open one and share its address directly.</p></aside>
     </main>
-    <footer><span>Enrique Herreros</span><span>Independent pages. One shared home.</span><a href="https://github.com/eherrerosj">GitHub ↗</a></footer>
+    <footer><span aria-hidden="true">└─ ~/artifacts</span><a href="https://github.com/eherrerosj/docs">source <span aria-hidden="true">↗</span></a></footer>
   </div>
 </body>
 </html>

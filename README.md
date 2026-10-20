@@ -22,6 +22,8 @@ docs/                         # GitHub repository
 │           └── assets/      # Keep each site's assets together
 ├── templates/static-site/    # Minimal starting page
 ├── scripts/add_site.py      # Import a site and add its library card
+├── src/sculpture.js         # Editable source for the ASCII sculpture
+├── package.json             # Optional tooling for rebuilding the sculpture
 └── README.md
 ```
 
@@ -93,6 +95,14 @@ Open http://localhost:8000/. Use the local server rather than opening `index.htm
 GitHub Pages is configured to **Deploy from a branch → `main` → `/docs`**. Each push to `main` triggers publication. Check **Actions** for the `pages build and deployment` run, or **Settings → Pages** for the published address. A successful Git push can precede the live update by a few minutes.
 
 There is no custom workflow, framework, or dependency installation. The `.nojekyll` file tells Pages to serve the published files directly.
+
+### Library design
+
+The home page is a small ASCII-inspired index. Its paper sculpture uses Three.js 0.186.1, bundled locally with its MIT license in `docs/assets/vendor/`. There are no CDN requests. `assets/catalog.js` builds the artifact list from `sites.json` and shows search when there are six or more entries.
+
+The animation has a pause button, respects reduced-motion preferences, and stops when the page or sculpture is out of view. A static ASCII drawing and the first artifact link remain available without WebGL or JavaScript.
+
+Uploading sites needs no build tools. Only if you edit the sculpture, change `src/sculpture.js`, then run `npm ci` and `npm run build:sculpture`. Commit the updated source and generated `docs/assets/sculpture.js` together. The dependency versions are pinned in `package-lock.json`.
 
 ### Paths and supported content
 

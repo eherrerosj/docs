@@ -13,22 +13,23 @@ function render() {
   const matching = entries.filter(site => [site.title, site.description, site.category, site.language].join(' ').toLocaleLowerCase().includes(query));
   list.replaceChildren();
   for (const site of matching) {
-    const card = node('a', 'site-card');
-    card.href = `sites/${encodeURIComponent(site.slug)}/`;
-    const top = node('div', 'card-top');
-    const arrow = node('span', 'arrow', '↗');
+    const row = node('a', 'artifact');
+    row.href = 'sites/' + encodeURIComponent(site.slug) + '/';
+    const number = node('span', 'artifact-number', String(entries.indexOf(site) + 1).padStart(3, '0'));
+    number.setAttribute('aria-hidden', 'true');
+    const body = node('div', 'artifact-body');
+    body.append(node('h3', '', site.title), node('p', '', site.description));
+    const meta = node('div', 'artifact-meta');
+    const year = /^\d{4}-\d{2}-\d{2}$/.test(site.updated || '') ? site.updated.slice(0, 4) : '';
+    meta.append(node('span', '', site.category || 'Website'), node('span', '', [site.language, year].filter(Boolean).join(' · ')));
+    const arrow = node('span', 'artifact-open', '↗');
     arrow.setAttribute('aria-hidden', 'true');
-    top.append(node('span', 'category', site.category || 'Website'), arrow);
-    const bottom = node('div', 'card-bottom');
-    const date = /^\d{4}-\d{2}-\d{2}$/.test(site.updated || '') ? new Date(`${site.updated}T12:00:00Z`) : null;
-    const formatted = date && !Number.isNaN(date.valueOf()) ? new Intl.DateTimeFormat('en-GB', {day:'numeric', month:'short', year:'numeric', timeZone:'UTC'}).format(date) : '';
-    bottom.append(node('span', '', site.language || ''), node('span', '', formatted));
-    card.append(top, node('h3', '', site.title), node('p', '', site.description), bottom);
-    list.append(card);
+    row.append(number, body, meta, arrow);
+    list.append(row);
   }
-  document.querySelector('#count').textContent = String(matching.length).padStart(2, '0');
+  document.querySelector('#count').textContent = '[' + String(matching.length).padStart(2, '0') + ']';
   document.querySelector('#empty').hidden = matching.length > 0;
-  document.querySelector('#status').textContent = `${matching.length} ${matching.length === 1 ? 'site' : 'sites'} found.`;
+  document.querySelector('#status').textContent = matching.length + (matching.length === 1 ? ' artifact.' : ' artifacts.');
 }
 fetch('sites.json').then(response => {
   if (!response.ok) throw new Error('Catalog unavailable');
@@ -37,9 +38,11 @@ fetch('sites.json').then(response => {
   if (!Array.isArray(data)) throw new Error('Invalid catalog');
   entries = data.filter(site => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(site.slug) && typeof site.title === 'string');
   render();
+  // Keep a small collection quiet; show search once it is useful.
+  document.querySelector('#search-wrap').hidden = entries.length < 6;
+  document.querySelector('.index-note').hidden = entries.length >= 6;
   search.addEventListener('input', render);
 }).catch(() => {
-  // The initial HTML keeps the first report accessible if the catalog cannot load.
-  search.disabled = true;
-  search.placeholder = 'Search unavailable';
+  // The first artifact is also in the HTML, so it works without JavaScript.
+  document.querySelector('#search-wrap').hidden = true;
 });
