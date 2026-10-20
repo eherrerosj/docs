@@ -3,10 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build:sculpture": "esbuild src/sculpture.js --bundle --minify --format=esm --outfile=docs/assets/sculpture.js --legal-comments=linked"
+    "build": "esbuild src/desk.js --bundle --minify --format=esm --outfile=docs/assets/desk.js --legal-comments=linked",
+    "test": "node --test tests/*.test.js"
   },
   "devDependencies": {
-    "three": "0.186.1",
-    "esbuild": "0.28.2"
-  }
+    "cannon-es": "0.20.0",
+    "esbuild": "0.28.2",
+    "three": "0.186.1"
+  },
+  "type": "module"
 }

@@ -22,8 +22,9 @@ docs/                         # GitHub repository
 │           └── assets/      # Keep each site's assets together
 ├── templates/static-site/    # Minimal starting page
 ├── scripts/add_site.py      # Import a site and add its library card
-├── src/sculpture.js         # Editable source for the ASCII sculpture
-├── package.json             # Optional tooling for rebuilding the sculpture
+├── src/                     # 3D desk, physics, catalog, paper textures
+├── tests/                   # Physics and document-link checks
+├── package.json             # Optional tooling for rebuilding the desk
 └── README.md
 ```
 
@@ -96,13 +97,36 @@ GitHub Pages is configured to **Deploy from a branch → `main` → `/docs`**. E
 
 There is no custom workflow, framework, or dependency installation. The `.nojekyll` file tells Pages to serve the published files directly.
 
-### Library design
+### The 3D reading desk
 
-The home page is a terminal-style index that follows the system color scheme, including live theme changes. Its ASCII file folder uses Three.js 0.186.1, bundled locally with its MIT license in `docs/assets/vendor/`. There are no CDN requests. `assets/catalog.js` builds the artifact list from `sites.json` and shows search when there are six or more entries.
+The library is a Three.js world with a table and movable documents. Cannon-es handles gravity, collisions, stacking, and dragging. Documents stay face up, and the table edges keep them in reach. The interface and scene follow the system's light/dark theme.
 
-The folder holds documents from the catalog (up to six visible sheets, with the full file count in its caption). Hovering or focusing an artifact brings its document forward. The animation has a pause button, respects reduced-motion preferences, and stops when the page or folder is out of view. A static ASCII drawing and the first artifact link remain available without WebGL or JavaScript.
+- Drag a document to pick it up and drop it elsewhere. Moving it does not open it.
+- Click or tap a document to select it, then use **Open document**. Double-click also opens it.
+- Drag empty desk space to orbit; scroll or pinch to zoom. Right-drag pans the view.
+- **Reset view** restores the camera. **Tidy desk** restores the documents.
+- When the canvas has keyboard focus, arrow keys pan, +/− zoom, R resets the view, and Enter goes to the searchable file index.
+- Escape cancels an active drag or closes the preview. The file index uses ordinary links and works without WebGL.
+- Documents start settled, with no automatic camera motion. Reduced-motion settings disable camera easing. The renderer stops drawing once the scene settles, and simulation pauses when the tab or desk is out of view.
 
-Uploading sites needs no build tools. Only if you edit the sculpture, change `src/sculpture.js`, then run `npm ci` and `npm run build:sculpture`. Commit the updated source and generated `docs/assets/sculpture.js` together. The dependency versions are pinned in `package-lock.json`.
+There is one paper per published artifact. A site may also define optional section papers in its docs/sites.json entry:
+
+~~~json
+"documents": [
+  {
+    "anchor": "architecture",
+    "title": "Architecture",
+    "description": "How this project is put together.",
+    "category": "Technical notes"
+  }
+]
+~~~
+
+The example links to sites/<slug>/#architecture; that ID must exist in the site's HTML. These are sections of the same artifact, not separate publications. The initial desk contains the FacturaScripts report and five of its actual sections.
+
+Everything is bundled locally; there are no CDN requests. Three.js 0.186.1 and cannon-es 0.20.0 licenses are in docs/assets/vendor/.
+
+Uploading sites needs no build tools: a new catalog entry appears on the desk automatically. To change the desk itself, edit src/, run **npm ci**, **npm test**, and **npm run build**, then commit the source and generated docs/assets/desk.js together. Versions are pinned in package-lock.json.
 
 ### Paths and supported content
 

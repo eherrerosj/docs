@@ -3,70 +3,60 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Enrique Herreros. Library of artifacts.">
+  <meta name="description" content="Enrique Herreros. A desk full of things to read.">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#eff2ea" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0b100e" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#edf0e6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c1311" media="(prefers-color-scheme: dark)">
   <title>Enrique Herreros / Library of artifacts</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
-  <script src="assets/catalog.js" defer></script>
-  <script src="assets/sculpture.js" type="module"></script>
+  <script src="assets/desk.js" type="module"></script>
 </head>
 <body>
-  <a class="skip" href="#library">Skip to artifacts</a>
-  <div class="page">
-    <header class="masthead">
-      <a href="./" class="home" aria-label="Home"><span class="mark" aria-hidden="true">[eh]</span> <span>~/artifacts</span></a>
-      <a class="github" href="https://github.com/eherrerosj">github <span aria-hidden="true">↗</span></a>
-    </header>
-    <main>
-      <section class="hero" aria-labelledby="name">
-        <div class="identity">
-          <p class="eyebrow"><span aria-hidden="true">$</span> whoami</p>
-          <h1 id="name">Enrique<br>Herreros<span class="period">.</span></h1>
-          <p class="subtitle">Library of artifacts<span class="cursor" aria-hidden="true">_</span></p>
-          <a class="index-jump" href="#library"><span aria-hidden="true">[</span> browse the files <span aria-hidden="true">↓ ]</span></a>
+  <a class="skip" href="#library">Skip the desk and read the file index</a>
+  <header class="masthead">
+    <a class="identity" href="./"><span class="mark" aria-hidden="true">[eh]</span><h1>Enrique Herreros<span>library of artifacts</span></h1></a>
+    <nav aria-label="Main"><a href="#library">[ file index ↓ ]</a><a class="github" href="https://github.com/eherrerosj">github ↗</a></nav>
+  </header>
+  <main>
+    <section class="workspace" aria-label="Explore the document desk">
+      <div id="stage" class="stage">
+        <canvas id="desk" tabindex="0" aria-label="Interactive 3D desk. Use the file index for keyboard reading, or arrow keys to look around the desk." aria-describedby="desk-help" hidden></canvas>
+        <div id="desk-fallback" class="fallback"><pre aria-hidden="true">┌──────────────────┐
+│   ~/artifacts    │
+│   [ ] [ ] [ ]    │
+└──────────────────┘</pre><p id="fallback-message">Setting out the documents…</p><noscript><style>#fallback-message{display:none}</style><p>Read the documents in the file index below.</p></noscript><a href="#library">[ open the file index ↓ ]</a></div>
+        <div class="desk-heading"><p><span class="status-dot" aria-hidden="true"></span> ~/desk</p><span id="desk-count">FacturaScripts / reading desk</span></div>
+        <div class="desk-toolbar" role="group" aria-label="Desk controls">
+          <button id="zoom-out" type="button" aria-label="Zoom out" disabled>−</button><button id="zoom-in" type="button" aria-label="Zoom in" disabled>+</button>
+          <button id="reset-view" type="button" disabled>reset view</button><button id="tidy" type="button" disabled>tidy desk</button>
         </div>
-        <figure class="sculpture">
-          <div id="ascii-stage" class="ascii-stage" aria-hidden="true">
-            <pre id="ascii-fallback">                __________________
-               /                 /|
-              /  ============   / |
-             /  ============   /  |
-            /  ========       /   |
-       ____/_________________/    |
-      /    /                /|    |
-     /____/________________/ |    |
-    |                       | |   /
-    |                       | |  /
-    |         ~/            | | /
-    |                       | |/
-    |_______________________|/</pre>
-            <canvas id="ascii" hidden></canvas>
-          </div>
-          <figcaption><span><span class="figure-number" aria-hidden="true">dir</span> ~/artifacts <span id="archive-count">[1 file]</span></span><button id="motion" type="button" aria-label="Pause archive animation" aria-pressed="false" hidden>[ pause ]</button></figcaption>
-        </figure>
-      </section>
-      <section id="library" class="library" aria-labelledby="index-label">
-        <div class="index-heading">
-          <h2 id="index-label"><span class="prompt" aria-hidden="true">&gt;_</span> artifacts <span id="count">[01]</span></h2>
-          <span class="index-note" aria-hidden="true">select a file ↙</span>
-          <label id="search-wrap" class="search" hidden><span aria-hidden="true">/</span><input id="search" type="search" placeholder="find an artifact" aria-label="Search artifacts" autocomplete="off"></label>
-        </div>
-        <div id="sites" class="index">
-          <a class="artifact" href="sites/facturascripts/" data-index="0">
-            <span class="artifact-number" aria-hidden="true">[001]</span>
-            <div class="artifact-body"><h3>FacturaScripts</h3><p>Inside the ERP, with a practical accounting course for Spanish SLs.</p></div>
-            <div class="artifact-meta"><span>Review + course</span><span>Spanish · 2026</span></div>
-            <span class="artifact-open" aria-hidden="true">[↗]</span>
-          </a>
-        </div>
-        <p id="empty" class="empty" hidden>Nothing here with that name.</p>
-        <p id="status" class="sr-only" role="status" aria-live="polite"></p>
-      </section>
-    </main>
-    <footer><span class="theme-status">theme: system / <span class="light-label">light</span><span class="dark-label">dark</span></span><a href="https://github.com/eherrerosj/docs">[ source ↗ ]</a></footer>
-  </div>
+        <div id="hover-label" class="hover-label" hidden></div>
+        <article id="preview" class="preview" aria-labelledby="preview-title" hidden>
+          <button id="close-preview" class="close-preview" type="button" aria-label="Close document preview">[×]</button>
+          <p id="preview-meta" class="preview-meta"></p><h2 id="preview-title"></h2><p id="preview-description"></p>
+          <a id="open-document" href="sites/facturascripts/">open document ↗</a>
+        </article>
+        <div id="desk-help" class="desk-help"><p>Drag the papers. <span class="mouse-word">Click</span><span class="touch-word">Tap</span> one to read.</p><span class="mouse-hint">Drag the desk to look around · scroll to zoom</span><span class="touch-hint">Drag empty desk to look around · pinch to zoom</span></div>
+        <span class="desk-corner" aria-hidden="true">[ move things around ]</span>
+      </div>
+      <p id="desk-status" class="sr-only" role="status" aria-live="polite"></p>
+    </section>
+    <section id="library" class="library" aria-labelledby="index-title">
+      <div class="index-heading"><h2 id="index-title"><span aria-hidden="true">&gt;_</span> file index <span id="count">[06]</span></h2><label class="search"><span aria-hidden="true">/</span><input id="search" type="search" placeholder="find a document" aria-label="Search documents" autocomplete="off"></label></div>
+      <p class="index-context">The report and its sections. Every paper on the desk opens something you can read.</p>
+      <div id="documents" class="index">
+        <a class="document-row" href="sites/facturascripts/"><span class="row-number">[01]</span><span class="row-body"><strong>FacturaScripts</strong><span>Inside the ERP, with a practical accounting course for Spanish SLs.</span></span><span class="row-kind">Full artifact</span><span aria-hidden="true">↗</span></a>
+        <a class="document-row" href="sites/facturascripts/#arquitectura"><span class="row-number">[02]</span><span class="row-body"><strong>Architecture</strong><span>How the controllers, models, and database fit together.</span></span><span class="row-kind">Section</span><span aria-hidden="true">↗</span></a>
+        <a class="document-row" href="sites/facturascripts/#factura"><span class="row-number">[03]</span><span class="row-body"><strong>An invoice, end to end</strong><span>Follow an invoice through the system and its accounting consequences.</span></span><span class="row-kind">Section</span><span aria-hidden="true">↗</span></a>
+        <a class="document-row" href="sites/facturascripts/#curso"><span class="row-number">[04]</span><span class="row-body"><strong>Accounting for a Spanish SL</strong><span>The practical accounting course, from the first document to a reviewable close.</span></span><span class="row-kind">Section</span><span aria-hidden="true">↗</span></a>
+        <a class="document-row" href="sites/facturascripts/#atlas"><span class="row-number">[05]</span><span class="row-body"><strong>The class atlas</strong><span>Find the core classes and understand what each one does.</span></span><span class="row-kind">Section</span><span aria-hidden="true">↗</span></a>
+        <a class="document-row" href="sites/facturascripts/#apendice"><span class="row-number">[06]</span><span class="row-body"><strong>Gaps &amp; open questions</strong><span>Architecture gaps, known problems, and pull requests worth reviewing.</span></span><span class="row-kind">Section</span><span aria-hidden="true">↗</span></a>
+      </div>
+      <p id="no-results" hidden>No documents match that search.</p>
+      <p id="index-status" class="sr-only" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+  <footer><span>theme: system / <span class="light-label">light</span><span class="dark-label">dark</span></span><a href="https://github.com/eherrerosj/docs">[ source ↗ ]</a></footer>
 </body>
 </html>

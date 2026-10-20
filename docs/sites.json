@@ -5,6 +5,38 @@
     "description": "Inside the ERP, with a practical accounting course for Spanish SLs.",
     "category": "Review + course",
     "language": "Spanish",
-    "updated": "2026-10-21"
+    "updated": "2026-10-21",
+    "documents": [
+      {
+        "anchor": "arquitectura",
+        "title": "Architecture",
+        "description": "How the controllers, models, and database fit together.",
+        "category": "Technical notes"
+      },
+      {
+        "anchor": "factura",
+        "title": "An invoice, end to end",
+        "description": "Follow an invoice through the system and its accounting consequences.",
+        "category": "Business logic"
+      },
+      {
+        "anchor": "curso",
+        "title": "Accounting for a Spanish SL",
+        "description": "The practical accounting course, from the first document to a reviewable close.",
+        "category": "Course"
+      },
+      {
+        "anchor": "atlas",
+        "title": "The class atlas",
+        "description": "Find the core classes and understand what each one does.",
+        "category": "Code reference"
+      },
+      {
+        "anchor": "apendice",
+        "title": "Gaps & open questions",
+        "description": "Architecture gaps, known problems, and pull requests worth reviewing.",
+        "category": "Due diligence"
+      }
+    ]
   }
 ]
