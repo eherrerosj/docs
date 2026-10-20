@@ -98,9 +98,9 @@ There is no custom workflow, framework, or dependency installation. The `.nojeky
 
 ### Library design
 
-The home page is a small ASCII-inspired index. Its paper sculpture uses Three.js 0.186.1, bundled locally with its MIT license in `docs/assets/vendor/`. There are no CDN requests. `assets/catalog.js` builds the artifact list from `sites.json` and shows search when there are six or more entries.
+The home page is a terminal-style index that follows the system color scheme, including live theme changes. Its ASCII file folder uses Three.js 0.186.1, bundled locally with its MIT license in `docs/assets/vendor/`. There are no CDN requests. `assets/catalog.js` builds the artifact list from `sites.json` and shows search when there are six or more entries.
 
-The animation has a pause button, respects reduced-motion preferences, and stops when the page or sculpture is out of view. A static ASCII drawing and the first artifact link remain available without WebGL or JavaScript.
+The folder holds documents from the catalog (up to six visible sheets, with the full file count in its caption). Hovering or focusing an artifact brings its document forward. The animation has a pause button, respects reduced-motion preferences, and stops when the page or folder is out of view. A static ASCII drawing and the first artifact link remain available without WebGL or JavaScript.
 
 Uploading sites needs no build tools. Only if you edit the sculpture, change `src/sculpture.js`, then run `npm ci` and `npm run build:sculpture`. Commit the updated source and generated `docs/assets/sculpture.js` together. The dependency versions are pinned in `package-lock.json`.
 

@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Enrique Herreros. Library of artifacts.">
-  <meta name="theme-color" content="#f2f0e9">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#eff2ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b100e" media="(prefers-color-scheme: dark)">
   <title>Enrique Herreros / Library of artifacts</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
@@ -15,60 +17,56 @@
   <a class="skip" href="#library">Skip to artifacts</a>
   <div class="page">
     <header class="masthead">
-      <a href="./" class="home" aria-label="Home"><span class="mark" aria-hidden="true">[eh]</span> / index</a>
+      <a href="./" class="home" aria-label="Home"><span class="mark" aria-hidden="true">[eh]</span> <span>~/artifacts</span></a>
       <a class="github" href="https://github.com/eherrerosj">github <span aria-hidden="true">↗</span></a>
     </header>
     <main>
       <section class="hero" aria-labelledby="name">
         <div class="identity">
-          <p class="eyebrow"><span aria-hidden="true">┌─</span> a personal collection</p>
+          <p class="eyebrow"><span aria-hidden="true">$</span> whoami</p>
           <h1 id="name">Enrique<br>Herreros<span class="period">.</span></h1>
           <p class="subtitle">Library of artifacts<span class="cursor" aria-hidden="true">_</span></p>
+          <a class="index-jump" href="#library"><span aria-hidden="true">[</span> browse the files <span aria-hidden="true">↓ ]</span></a>
         </div>
         <figure class="sculpture">
           <div id="ascii-stage" class="ascii-stage" aria-hidden="true">
-            <pre id="ascii-fallback">                 .________________.
-               .'                /|
-             .'                .' |
-           .'________________.'   |
-           |  . . . . . . .  |   .'
-           |________________| .'
-              .________________.
-            .'                /|
-          .'                .' |
-        .'________________.'   |
-        |  . . . . . . .  |   .'
-        |________________| .'
-           .________________.
-         .'                /|
-       .'                .' |
-     .'________________.'   |
-     |  . . . . . . .  |   .'
-     |________________| .'</pre>
+            <pre id="ascii-fallback">                __________________
+               /                 /|
+              /  ============   / |
+             /  ============   /  |
+            /  ========       /   |
+       ____/_________________/    |
+      /    /                /|    |
+     /____/________________/ |    |
+    |                       | |   /
+    |                       | |  /
+    |         ~/            | | /
+    |                       | |/
+    |_______________________|/</pre>
             <canvas id="ascii" hidden></canvas>
           </div>
-          <figcaption><span><span class="figure-number">01</span> / paper study</span><button id="motion" type="button" aria-label="Pause sculpture animation" aria-pressed="false" hidden>[ pause ]</button></figcaption>
+          <figcaption><span><span class="figure-number" aria-hidden="true">dir</span> ~/artifacts <span id="archive-count">[1 file]</span></span><button id="motion" type="button" aria-label="Pause archive animation" aria-pressed="false" hidden>[ pause ]</button></figcaption>
         </figure>
       </section>
       <section id="library" class="library" aria-labelledby="index-label">
         <div class="index-heading">
-          <h2 id="index-label">Artifacts <span id="count">[01]</span></h2>
-          <span class="index-note" aria-hidden="true">open to explore ↙</span>
+          <h2 id="index-label"><span class="prompt" aria-hidden="true">&gt;_</span> artifacts <span id="count">[01]</span></h2>
+          <span class="index-note" aria-hidden="true">select a file ↙</span>
           <label id="search-wrap" class="search" hidden><span aria-hidden="true">/</span><input id="search" type="search" placeholder="find an artifact" aria-label="Search artifacts" autocomplete="off"></label>
         </div>
         <div id="sites" class="index">
-          <a class="artifact" href="sites/facturascripts/">
-            <span class="artifact-number" aria-hidden="true">001</span>
+          <a class="artifact" href="sites/facturascripts/" data-index="0">
+            <span class="artifact-number" aria-hidden="true">[001]</span>
             <div class="artifact-body"><h3>FacturaScripts</h3><p>Inside the ERP, with a practical accounting course for Spanish SLs.</p></div>
             <div class="artifact-meta"><span>Review + course</span><span>Spanish · 2026</span></div>
-            <span class="artifact-open" aria-hidden="true">↗</span>
+            <span class="artifact-open" aria-hidden="true">[↗]</span>
           </a>
         </div>
         <p id="empty" class="empty" hidden>Nothing here with that name.</p>
         <p id="status" class="sr-only" role="status" aria-live="polite"></p>
       </section>
     </main>
-    <footer><span aria-hidden="true">└─ ~/artifacts</span><a href="https://github.com/eherrerosj/docs">source <span aria-hidden="true">↗</span></a></footer>
+    <footer><span class="theme-status">theme: system / <span class="light-label">light</span><span class="dark-label">dark</span></span><a href="https://github.com/eherrerosj/docs">[ source ↗ ]</a></footer>
   </div>
 </body>
 </html>

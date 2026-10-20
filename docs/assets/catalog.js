@@ -15,14 +15,15 @@ function render() {
   for (const site of matching) {
     const row = node('a', 'artifact');
     row.href = 'sites/' + encodeURIComponent(site.slug) + '/';
-    const number = node('span', 'artifact-number', String(entries.indexOf(site) + 1).padStart(3, '0'));
+    row.dataset.index = String(entries.indexOf(site));
+    const number = node('span', 'artifact-number', '[' + String(entries.indexOf(site) + 1).padStart(3, '0') + ']');
     number.setAttribute('aria-hidden', 'true');
     const body = node('div', 'artifact-body');
     body.append(node('h3', '', site.title), node('p', '', site.description));
     const meta = node('div', 'artifact-meta');
     const year = /^\d{4}-\d{2}-\d{2}$/.test(site.updated || '') ? site.updated.slice(0, 4) : '';
     meta.append(node('span', '', site.category || 'Website'), node('span', '', [site.language, year].filter(Boolean).join(' · ')));
-    const arrow = node('span', 'artifact-open', '↗');
+    const arrow = node('span', 'artifact-open', '[↗]');
     arrow.setAttribute('aria-hidden', 'true');
     row.append(number, body, meta, arrow);
     list.append(row);
@@ -37,7 +38,10 @@ fetch('sites.json').then(response => {
 }).then(data => {
   if (!Array.isArray(data)) throw new Error('Invalid catalog');
   entries = data.filter(site => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(site.slug) && typeof site.title === 'string');
+  list.dataset.total = String(entries.length);
+  document.querySelector('#archive-count').textContent = '[' + entries.length + (entries.length === 1 ? ' file]' : ' files]');
   render();
+  document.dispatchEvent(new CustomEvent('library:catalog', { detail: entries.length }));
   // Keep a small collection quiet; show search once it is useful.
   document.querySelector('#search-wrap').hidden = entries.length < 6;
   document.querySelector('.index-note').hidden = entries.length >= 6;
