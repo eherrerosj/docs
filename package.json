@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "esbuild src/desk.js --bundle --minify --format=esm --outfile=docs/assets/desk.js --legal-comments=linked",
+    "build": "node scripts/build.mjs",
     "test": "node --test tests/*.test.js"
   },
   "devDependencies": {

@@ -113,7 +113,7 @@ Each published artifact gets one paper on the desk and one entry in the file ind
 
 Everything is bundled locally; there are no CDN requests. Three.js 0.186.1 and cannon-es 0.20.0 licenses are in docs/assets/vendor/.
 
-Uploading sites needs no build tools: a new catalog entry appears on the desk automatically. To change the desk itself, edit src/, run **npm ci**, **npm test**, and **npm run build**, then commit the source and generated docs/assets/desk.js together. Versions are pinned in package-lock.json.
+Uploading sites needs no build tools: a new catalog entry appears on the desk automatically. To change the desk itself, edit src/, run **npm ci**, **npm test**, and **npm run build**, then commit the source and generated docs/assets/desk.js together. The build also updates the script URL with a content hash so browsers load the new version after each deployment. The catalog is revalidated on each page load. Versions are pinned in package-lock.json.
 
 ### Paths and supported content
 

@@ -25,7 +25,7 @@ const fallbackSites = [{
 async function load() {
   let sites;
   try {
-    const response = await fetch('sites.json');
+    const response = await fetch('sites.json', { cache: 'no-cache' });
     if (!response.ok) throw new Error('Catalog unavailable');
     sites = await response.json();
     if (!Array.isArray(sites)) throw new Error('Invalid catalog');
